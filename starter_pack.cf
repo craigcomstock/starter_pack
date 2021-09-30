@@ -1,0 +1,21 @@
+first the yaml/free-text markdown asciidoc style?
+# deps
+  cf-remote
+  vagrant
+  parallel
+
+# then the regular policy style :p
+bundle agent starter_pack
+{
+  "dependencies" string => "
+  cf-remote
+  vagrant
+  parallel
+";
+  packages:
+    "cf-remote"
+      version => "latest";
+
+    "vagrant"
+      version => "latest";
+}
