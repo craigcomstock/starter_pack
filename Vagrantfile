@@ -56,12 +56,26 @@ Vagrant.configure("2") do |config|
     config.vm.define "dev", primary: true, autostart: false do |dev|
       dev.vm.hostname = "dev"
       dev.vm.network "private_network", ip: "192.168.100.10"
+      # for running `hugo server -D` for the website (or other purposes)
+dev.vm.network "forwarded_port", guest: 1313, host: 80
+
       # Doesn't work in libvirt:
       # dev.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
       dev.vm.provider "virtualbox" do |v|
-        v.memory = 2048
+        v.memory = 4096
         v.cpus = 4
         v.customize ["modifyvm", :id, "--vram", "16"]
+        # fancy usb stuff for working on personal projects
+        v.customize ["modifyvm", :id, "--usb", "on"]
+        v.customize ["modifyvm", :id, "--usbehci", "on"]
+        v.customize ["usbfilter", "add", "0",
+          "--target", :id,
+          "--name", "PinePhone",
+          "--vendorid", "18d1"]
+        v.customize ["usbfilter", "add", "1",
+          "--target", :id,
+          "--name", "Motorola Surnia",
+          "--vendorid", "22b8"]
       end
       dev.vm.provider :libvirt do |v|
         v.memory = 2048
@@ -82,7 +96,7 @@ Vagrant.configure("2") do |config|
       docbuildslave.vm.provision "shell",
                           name: "Installing Jekyll and the CFEngine documentation tool-chain",
                           privileged: false,
-                          path: "#{NTECH_ROOT}/cfengine/documentation-generator/_scripts/provisioning-install-build-tool-chain.sh"
+                          path: "#{NTECH_ROOT}/documentation-generator/_scripts/provisioning-install-build-tool-chain.sh"
       docbuildslave.vm.provider "virtualbox" do |v|
         v.memory = 2048
         v.cpus = 4
@@ -133,12 +147,61 @@ Vagrant.configure("2") do |config|
         hub.vm.hostname = "hub"
         hub.vm.network "private_network", ip: "192.168.100.90"
         hub.vm.network :forwarded_port, guest: 443, host: 9002
+        hub.vm.provider "virtualbox" do |v|
+          v.memory = 4096
+          v.cpus = 2
+          v.customize ["modifyvm", :id, "--vram", "16"]
+        end
+        hub.vm.provider :libvirt do |v|
+          v.memory = 2048
+          v.cpus = 2
+        end
+    end
+    # Superhub test machine:
+    config.vm.define "superhub", autostart: false do |superhub|
+        superhub.vm.hostname = "superhub"
+        superhub.vm.network "private_network", ip: "192.168.100.90"
+        superhub.vm.network :forwarded_port, guest: 443, host: 9002
+        superhub.vm.provider "virtualbox" do |v|
+          v.memory = 4096
+          v.cpus = 2
+          v.customize ["modifyvm", :id, "--vram", "16"]
+        end
+        superhub.vm.provider :libvirt do |v|
+          v.memory = 2048
+          v.cpus = 2
+        end
     end
 
     # Client test machine:
     config.vm.define "client", autostart: false do |client|
         client.vm.hostname = "client"
         client.vm.network "private_network", ip: "192.168.100.91"
+        client.vm.provider "virtualbox" do |v|
+          v.memory = 2048
+          v.cpus = 1
+          v.customize ["modifyvm", :id, "--vram", "16"]
+        end
+    end
+    # Feeder1 test machine:
+    config.vm.define "feeder1", autostart: false do |feeder1|
+        feeder1.vm.hostname = "feeder1"
+        feeder1.vm.network "private_network", ip: "192.168.100.91"
+        feeder1.vm.provider "virtualbox" do |v|
+          v.memory = 2048
+          v.cpus = 1
+          v.customize ["modifyvm", :id, "--vram", "16"]
+        end
+    end
+    # Feeder2 test machine:
+    config.vm.define "feeder2", autostart: false do |feeder2|
+        feeder2.vm.hostname = "feeder2"
+        feeder2.vm.network "private_network", ip: "192.168.100.92"
+        feeder2.vm.provider "virtualbox" do |v|
+          v.memory = 2048
+          v.cpus = 1
+          v.customize ["modifyvm", :id, "--vram", "16"]
+        end
     end
 
     # Clean test machine:
