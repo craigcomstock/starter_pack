@@ -17,12 +17,15 @@ parallel ssh {} sudo apt remove -y postgres* ::: ${hubs}
 parallel cf-remote --version master install --hub {} ::: ${hubs}
 parallel cf-remote --version master install --clients {} ::: ${clients}
 # then do api to setup FR dude! :p
-rm hubs.cert
+rm -f hubs.cert
 parallel ssh {} sudo cat /var/cfengine/httpd/ssl/certs/{}.cert ::: ${hubs} >> hubs.cert
 # TODO fix up this next step, with sudo, as a promise not an action
-#echo "192.168.100.90 superhub" | sudo tee -a /etc/hosts
-#echo "192.168.100.91 feeder1" | sudo tee -a /etc/hosts
-#echo "192.168.100.92 feeder2" | sudo tee -a /etc/hosts
+grep superhub /etc/hosts || \
+echo "192.168.100.90 superhub" | sudo tee -a /etc/hosts
+grep feeder1 /etc/hosts || \
+echo "192.168.100.91 feeder1" | sudo tee -a /etc/hosts
+grep feeder2 /etc/hosts || \
+echo "192.168.100.92 feeder2" | sudo tee -a /etc/hosts
 # or rather sed promise to include that line :p
 parallel --link ssh {1} sudo cf-agent -IB {2} ::: superhub feeder1 feeder2 ::: 192.168.100.90 192.168.100.91 192.168.100.92
 echo "192.168.100.91 feeder1" | ssh superhub sudo tee -a /etc/hosts
