@@ -6,7 +6,6 @@ hubs="superhub feeder1 feeder2"
 clients="bob"
 all="${hubs} ${clients}"
 echo "all servers are ${all}"
-parallel vagrant destroy --force {} ::: ${all}
 parallel vagrant up {} ::: ${all}
 parallel sed -i '/{}/,/^$/d' ~/.ssh/config ::: ${all}
 parallel vagrant ssh-config {} >> ~/.ssh/config ::: ${all}
