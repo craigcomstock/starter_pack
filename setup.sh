@@ -27,5 +27,10 @@ grep feeder2 /etc/hosts || \
 echo "192.168.100.92 feeder2" | sudo tee -a /etc/hosts
 # or rather sed promise to include that line :p
 parallel --link ssh {1} sudo cf-agent -IB {2} ::: superhub feeder1 feeder2 ::: 192.168.100.90 192.168.100.91 192.168.100.92
-echo "192.168.100.91 feeder1" | ssh superhub sudo tee -a /etc/hosts
-echo "192.168.100.92 feeder2" | ssh superhub sudo tee -a /etc/hosts
+#echo "192.168.100.91 feeder1" | ssh superhub sudo tee -a /etc/hosts
+#echo "192.168.100.91 feeder1" | ssh bob sudo tee -a /etc/hosts
+#echo "192.168.100.91 feeder1" | ssh feeder2 sudo tee -a /etc/hosts
+#echo "192.168.100.92 feeder2" | ssh superhub sudo tee -a /etc/hosts
+#echo "192.168.100.92 feeder2" | ssh feeder1 sudo tee -a /etc/hosts
+#echo "192.168.100.92 feeder2" | ssh bob sudo tee -a /etc/hosts
+#echo "192.168.100.90 superhub" | ssh bob sudo tee -a /etc/hosts
