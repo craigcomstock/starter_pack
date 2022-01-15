@@ -1,5 +1,7 @@
 #!/usr/bin/env sh
 
+user=$1
+[ -z "$1" ] && user=$(whoami)
 cloner(){
     if [ -d "$2" ]; then
         echo "$2 already exists"
@@ -25,8 +27,6 @@ cfengine_clone masterfiles
 cfengine_clone enterprise
 cfengine_clone nova
 cfengine_clone mission-portal
-cfengine_clone ldap-api
-cfengine_clone design-center
 cfengine_clone buildscripts
 cfengine_clone documentation
 cfengine_clone documentation-generator
