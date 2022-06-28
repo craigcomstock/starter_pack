@@ -136,6 +136,9 @@ v.customize ['modifyvm', :id, '--usb', 'on']
         hub.vm.hostname = "hub"
         hub.vm.network "private_network", ip: "192.168.56.90"
         hub.vm.network :forwarded_port, guest: 443, host: 9002
+        hub.vm.provider "virtualbox" do |vb|
+          vb.memory = 2048
+        end
     end
 
     # Client test machine:
