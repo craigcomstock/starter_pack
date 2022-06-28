@@ -1,14 +1,19 @@
 #!/usr/bin/env sh
+set -e
+set -x
 
 user=$1
 [ -z "$1" ] && user=$(whoami)
+
+# TODO check if user is present up there!
+# don't worry about failures on some repos right?
 cloner(){
     if [ -d "$2" ]; then
         echo "$2 already exists"
     else
         git clone --recursive --origin upstream git@github.com:$1/$2.git && \
         cd $2 && \
-        git remote add origin git@github.com:$(whoami)/$2.git && \
+        git remote add origin git@github.com:${user}/$2.git && \
         git fetch --all --tags && \
         cd ..
     fi

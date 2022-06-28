@@ -162,7 +162,7 @@ v.customize ['modifyvm', :id, '--usb', 'on']
         centos.vm.box = "centos/8"
         centos.vm.hostname = "centos"
         centos.vm.provision "bootstrap", type: "shell", path: "scripts/centos.sh"
-        centos.vm.network "private_network", ip: "192.168.56.93"
+        centos.vm.network "private_network", ip: "192.168.100.93"
     end
 
     # ============================ DEMO MACHINES: ============================
