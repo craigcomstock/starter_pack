@@ -159,7 +159,7 @@ v.customize ['modifyvm', :id, '--usb', 'on']
 
     # CentOS build/test machine:
     config.vm.define "centos", autostart: false do |centos|
-        centos.vm.box = "centos/7"
+        centos.vm.box = "centos/8"
         centos.vm.hostname = "centos"
         centos.vm.provision "bootstrap", type: "shell", path: "scripts/centos.sh"
         centos.vm.network "private_network", ip: "192.168.56.93"
@@ -181,7 +181,7 @@ v.customize ['modifyvm', :id, '--usb', 'on']
     end
 
     config.vm.define "charlie", autostart: false do |charlie|
-        charlie.vm.box = "centos/7"
+        charlie.vm.box = "centos/8"
         charlie.vm.hostname = "charlie"
         charlie.vm.provision "bootstrap", type: "shell", path: "scripts/centos.sh"
         charlie.vm.network "private_network", ip: "192.168.56.96"
