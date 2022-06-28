@@ -59,7 +59,7 @@ Vagrant.configure("2") do |config|
       # Doesn't work in libvirt:
       # dev.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
       dev.vm.provider "virtualbox" do |v|
-        v.memory = 2048
+        v.memory = 8096
         v.cpus = 4
         v.customize ["modifyvm", :id, "--vram", "16"]
 v.customize ['modifyvm', :id, '--usb', 'on']
