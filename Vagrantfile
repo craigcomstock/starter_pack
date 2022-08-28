@@ -1,6 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+HOME=ENV['HOME']
 if ENV['NTECH_ROOT']
   NTECH_ROOT=ENV['NTECH_ROOT']
 else
@@ -55,11 +56,11 @@ Vagrant.configure("2") do |config|
     # Main development machine:
     config.vm.define "dev", primary: true, autostart: false do |dev|
       dev.vm.hostname = "dev"
-      dev.vm.network "private_network", ip: "192.168.100.10"
+      dev.vm.network "private_network", ip: "192.168.56.10"
       # Doesn't work in libvirt:
       # dev.vm.network "private_network", ip: "fde4:8dba:82e1::c4"
       dev.vm.provider "virtualbox" do |v|
-        v.memory = 2048
+        v.memory = 8192
         v.cpus = 4
         v.customize ["modifyvm", :id, "--vram", "16"]
       end
@@ -67,6 +68,12 @@ Vagrant.configure("2") do |config|
         v.memory = 2048
         v.cpus = 2
       end
+      # use with MUCH care! rm -rf in vm will rm -rf outside! :O
+      dev.vm.synced_folder "#{HOME}", "/home/mbp", disabled: false,
+owner: "craig",
+group: "craig",
+create: true,
+rsync__args: ["--verbose", "--archive", "--delete", "-z", "--links"]
     end
 
     # ============================ BUILD MACHINES: ===========================
