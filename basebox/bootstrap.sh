@@ -33,6 +33,7 @@ apt-get install -y gdb automake autoconf libtool
 apt-get install -y python3 python-is-python3 python3-pip
 apt-get install -y libssl-dev libpcre3 libpcre3-dev
 apt-get install -y bison libbison-dev libacl1 libacl1-dev libpq-dev
+apt-get install -y libyaml-dev libxml2-dev
 apt-get install -y lmdb-utils liblmdb-dev libpam0g-dev flex
 apt-get install -y libtokyocabinet-dev
 apt-get install -y unzip

@@ -205,6 +205,8 @@ cd /northern.tech/cfengine && cd nova && make -j2
 (You can run the steps without using `cf-builder.py`, simplify the `cd` commands if you'd like)
 
 ### WIP! Installing CFEngine on hub machine
+NOTE: Will not work with libvirt because the synced folders use rsync one way into vms
+instead of bi-directionally as is the case with a shared folder with virtualbox.
 
 In general, don't install on your dev machine, and don't run sudo commands on the dev machine.
 Everything you're doing there should work without sudo.
